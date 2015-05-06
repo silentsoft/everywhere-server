@@ -23,6 +23,7 @@ public class SearchBiz {
 	public TbmSmUserDVO getUserInfo(TbmSmUserDVO tbmSmUserDVO) {
 		List<TbmSmUserDVO> returnDVO = getTbmSmUserDQM().getTbmSmUser(ObjectUtil.toMap(tbmSmUserDVO));
 		
-		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : tbmSmUserDVO;
+//		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : tbmSmUserDVO;
+		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : null;
 	}
 }

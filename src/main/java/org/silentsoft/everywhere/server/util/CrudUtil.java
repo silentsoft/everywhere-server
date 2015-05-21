@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.silentsoft.core.util.ObjectUtil;
+import org.silentsoft.everywhere.context.BizConst;
+import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.server.core.MetaDAO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -41,8 +43,7 @@ public class CrudUtil {
 		ObjectUtil.bindValue(dvo, "fstRegDt", dbCurrentTime);
 		ObjectUtil.bindValue(dvo, "fnlUpdDt", dbCurrentTime);
 		
-//		String userId = (String) SharedThreadFactory.getInstance().get(Constance.USER_ID, Constance.DEFAULT_USER_ID);
-		String userId = "Silentsoft";
+		String userId = ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
 		ObjectUtil.bindValue(dvo, "fstRegerId", userId);
 		ObjectUtil.bindValue(dvo, "fnlUpderId", userId);
 
@@ -117,8 +118,7 @@ public class CrudUtil {
 					String dbCurrentTime = getMetaDAO().getCurrentTime();
 					ObjectUtil.bindMapValue(map, "fnlUpdDt", dbCurrentTime);
 
-					//Object userId = SharedThreadFactory.getInstance().get(Constance.USER_ID, Constance.DEFAULT_USER_ID);
-					String userId = "Silentsoft";
+					String userId = ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
 					ObjectUtil.bindMapValue(map, "fnlUpderId", userId);
 					
 					String updateStatement = createUpdateStatement(tableName, map, pkColumns, addUseYn, addDelYn);

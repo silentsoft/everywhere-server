@@ -1,8 +1,11 @@
 package org.silentsoft.everywhere.server.fx.login.controller;
 
+import org.silentsoft.everywhere.context.BizConst;
+import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.context.host.EverywhereException;
 import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
 import org.silentsoft.core.util.JSONUtil;
+import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.server.fx.login.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,12 @@ public class LoginController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		return loginService.getTbmSmUserDVO(inputDVO);
+		TbmSmUserDVO outputDVO = loginService.getTbmSmUserDVO(inputDVO);
+		if (ObjectUtil.isNotEmpty(outputDVO)) {
+			SharedThreadMemory.put(BizConst.KEY_USER_ID, outputDVO.getUserId());
+			SharedThreadMemory.put(BizConst.KEY_USER_NM, outputDVO.getUserNm());
+		}
+		
+		return outputDVO;
 	}
 }

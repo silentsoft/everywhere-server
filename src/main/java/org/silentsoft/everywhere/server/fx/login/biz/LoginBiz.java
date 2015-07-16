@@ -7,6 +7,7 @@ import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
 import org.silentsoft.everywhere.server.model.table.TbmSmUserDQM;
 import org.silentsoft.everywhere.server.util.BeanUtil;
+import org.silentsoft.everywhere.server.util.CrudUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,5 +29,9 @@ public class LoginBiz {
 		List<TbmSmUserDVO> returnDVO = getTbmSmUserDQM().getTbmSmUser(ObjectUtil.toMap(tbmSmUserDVO));
 		
 		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : null;
+	}
+	
+	public int updateUserInfo(TbmSmUserDVO tbmSmUserDVO) throws Exception {
+		return CrudUtil.update(tbmSmUserDVO);
 	}
 }

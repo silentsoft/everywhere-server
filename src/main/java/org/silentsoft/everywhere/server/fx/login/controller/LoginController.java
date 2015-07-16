@@ -6,6 +6,7 @@ import org.silentsoft.everywhere.context.BizConst;
 import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
 import org.silentsoft.everywhere.server.fx.login.service.LoginService;
+import org.silentsoft.everywhere.server.util.SysUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/authentication", method=RequestMethod.POST)
 	@ResponseBody
-	public TbmSmUserDVO getTbmSmUserDVO(@RequestBody String json) {
+	public TbmSmUserDVO getTbmSmUserDVO(@RequestBody String json) throws Exception {
 		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
 		
 		TbmSmUserDVO inputDVO = null;
@@ -40,6 +41,19 @@ public class LoginController {
 		if (ObjectUtil.isNotEmpty(outputDVO)) {
 			SharedThreadMemory.put(BizConst.KEY_USER_ID, outputDVO.getUserId());
 			SharedThreadMemory.put(BizConst.KEY_USER_NM, outputDVO.getUserNm());
+			
+			/**
+			 * if want show to past logged in time
+			 * 
+			 *  String prevFnlAccsDt = outputDVO.getFnlAccsDt();
+			
+				outputDVO.setFnlAccsDt(SysUtil.getCurrentTime());
+				loginService.updateUserInfo(outputDVO);
+				
+				outputDVO.setFnlAccsDt(prevFnlAccsDt);
+			 */
+			outputDVO.setFnlAccsDt(SysUtil.getCurrentTime());
+			loginService.updateUserInfo(outputDVO);
 		}
 		
 		return outputDVO;

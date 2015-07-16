@@ -40,5 +40,7 @@ public class LoginService {
 		return null;
 	}
 	
-	
+	public int updateUserInfo(TbmSmUserDVO updateDVO) throws Exception {
+		return getLoginBiz().updateUserInfo(updateDVO);
+	}
 }

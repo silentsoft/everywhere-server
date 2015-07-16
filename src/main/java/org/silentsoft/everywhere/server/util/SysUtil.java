@@ -3,12 +3,23 @@ package org.silentsoft.everywhere.server.util;
 import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.data.DataMap;
 import org.silentsoft.core.util.ObjectUtil;
+import org.silentsoft.everywhere.server.core.MetaDAO;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 public final class SysUtil {
 	
+	private static MetaDAO metaDao;
+	
 	private static DataMap cacheMap;
+	
+	private static synchronized MetaDAO getMetaDAO() {
+		if (metaDao == null) {
+			metaDao = BeanUtil.getBean(MetaDAO.class);
+		}
+		
+		return metaDao;
+	}
 	
 	private static synchronized DataMap getCacheMap() {
 		if (cacheMap == null) {
@@ -16,6 +27,30 @@ public final class SysUtil {
 		}
 		
 		return cacheMap;
+	}
+	
+	public static String getCurrentTime() {
+		String currentTime = "";
+		
+		try {
+			currentTime = getMetaDAO().getCurrentTime();
+		} catch (Exception e) {
+			;
+		}
+		
+		return currentTime;
+	}
+	
+	public static String getCurrentTime(String format) {
+		String currentTime = "";
+		
+		try {
+			currentTime = getMetaDAO().getCurrentTime(format);
+		} catch (Exception e) {
+			;
+		}
+		
+		return currentTime;
 	}
 	
 	public static String getProperty(String key) {

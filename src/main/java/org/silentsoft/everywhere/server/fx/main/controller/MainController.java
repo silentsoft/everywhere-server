@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.util.JSONUtil;
+import org.silentsoft.everywhere.context.BizConst;
+import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.context.model.pojo.FilePOJO;
 import org.silentsoft.everywhere.server.PropertyKey;
 import org.silentsoft.everywhere.server.fx.main.service.MainService;
@@ -30,7 +32,6 @@ public class MainController {
 	@ResponseBody
 	public void upload(@RequestParam("json") String json, @RequestParam("binary") MultipartFile[] files) throws Exception {
 		//LOGGER.debug("i got json string.. <{}>", new Object[]{json});
-		
 		FilePOJO filePOJO = null;
 		
 		try {
@@ -39,7 +40,7 @@ public class MainController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT);//"E:\\success";
+		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT);
 		File cloudRootDirectory = new File(cloudRoot);
 		
 		for (MultipartFile multipartFile : files) {

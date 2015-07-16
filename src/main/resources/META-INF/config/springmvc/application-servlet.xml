@@ -23,6 +23,9 @@
     <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
     
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="100000000" /> <!-- 10MB -->
+    	<!-- 100MB : 104857600 -->
+    	<!-- 1GB : 1073741824 -->
+    	<!-- 4GB : 4294967296 -->
+        <property name="maxUploadSize" value="4294967296" />
     </bean>
 </beans>

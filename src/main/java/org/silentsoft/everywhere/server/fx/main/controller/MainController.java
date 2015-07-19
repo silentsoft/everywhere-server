@@ -1,11 +1,14 @@
 package org.silentsoft.everywhere.server.fx.main.controller;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.util.JSONUtil;
-import org.silentsoft.everywhere.context.BizConst;
-import org.silentsoft.everywhere.context.core.SharedThreadMemory;
+import org.silentsoft.core.util.ObjectUtil;
+import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
+import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
 import org.silentsoft.everywhere.context.model.pojo.FilePOJO;
 import org.silentsoft.everywhere.server.PropertyKey;
 import org.silentsoft.everywhere.server.fx.main.service.MainService;
@@ -14,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +31,27 @@ public class MainController {
 	
 	@Autowired
 	private MainService mainService;
+	
+	@RequestMapping(value="/notice", method=RequestMethod.POST)
+	@ResponseBody
+	public MainSVO getNotices(@RequestBody String json) throws Exception {
+		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
+		
+		MainSVO mainSVO = null;
+		
+		try {
+			mainSVO = JSONUtil.JSONToObject(json, MainSVO.class);
+		} catch (Exception e) {
+			LOGGER.error("Failed parse json to object !", new Object[]{e});
+		}
+		
+		Map inputMap = ObjectUtil.toMap(mainSVO.getNotice001DVO());
+		List<Notice002DVO> notice002DVOList = mainService.getNotices(inputMap);
+		
+		mainSVO.setNotice002DVOList(notice002DVOList);
+		
+		return mainSVO;
+	}
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
 	@ResponseBody

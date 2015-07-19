@@ -53,6 +53,8 @@ public class LoginController {
 				outputDVO.setFnlAccsDt(prevFnlAccsDt);
 			 */
 			outputDVO.setFnlAccsDt(SysUtil.getCurrentTime());
+			outputDVO.setFnlAccsIp(inputDVO.getFnlAccsIp());
+			outputDVO.setLangCode(inputDVO.getLangCode());
 			loginService.updateUserInfo(outputDVO);
 		}
 		

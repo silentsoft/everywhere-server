@@ -79,9 +79,6 @@ public class MainController {
 			if (destination.exists()) {
 				destination.delete();
 			}
-			
-			destination.createNewFile();
-			
 			multipartFile.transferTo(destination);
 		}
 		

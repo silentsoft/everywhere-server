@@ -65,7 +65,7 @@ public class MainController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT);
+		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT) + filePOJO.getUserUniqueSeq() + File.separator;
 		File cloudRootDirectory = new File(cloudRoot);
 		
 		for (MultipartFile multipartFile : files) {

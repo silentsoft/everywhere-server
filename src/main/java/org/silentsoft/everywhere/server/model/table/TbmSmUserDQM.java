@@ -28,6 +28,7 @@ public class TbmSmUserDQM extends AbstractDAO {
 		sql.append("	   DEPT_NM, \n");
 		sql.append("	   ENG_DEPT_NM, \n");
 		sql.append("	   MOBILE_TEL, \n");
+		sql.append("	   UNIQUE_SEQ, \n");
 		sql.append("	   DEL_YN, \n");
 		sql.append("	   USE_YN \n");
 		sql.append("  FROM TBM_SM_USER \n");
@@ -58,6 +59,7 @@ public class TbmSmUserDQM extends AbstractDAO {
 				returnDVO.setDeptCode(resultSet.getString("DEPT_CODE"));
 				returnDVO.setDeptNm(resultSet.getString("DEPT_NM"));
 				returnDVO.setMobileTel(resultSet.getString("MOBILE_TEL"));
+				returnDVO.setUniqueSeq(resultSet.getString("UNIQUE_SEQ"));
 				returnDVO.setDelYn(resultSet.getString("DEL_YN"));
 				returnDVO.setUseYn(resultSet.getString("USE_YN"));
 				

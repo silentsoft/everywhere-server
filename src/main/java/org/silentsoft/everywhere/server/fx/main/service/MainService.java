@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
+import org.silentsoft.everywhere.context.model.table.TbpEwCloudDVO;
 import org.silentsoft.everywhere.server.fx.main.biz.MainBiz;
 import org.silentsoft.everywhere.server.util.BeanUtil;
 import org.slf4j.Logger;
@@ -26,5 +27,9 @@ public class MainService {
 	
 	public List<Notice002DVO> getNotices(Map<String, Object> inputMap) {
 		return getMainBiz().getNotices(inputMap);
+	}
+	
+	public int insertCloudInfo(TbpEwCloudDVO inputDVO) throws Exception {
+		return getMainBiz().insertCloudInfo(inputDVO);
 	}
 }

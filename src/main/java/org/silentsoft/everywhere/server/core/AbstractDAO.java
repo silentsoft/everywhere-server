@@ -11,7 +11,6 @@ public class AbstractDAO extends NamedParameterJdbcTemplate {
 
 	@SuppressWarnings("resource")
 	public AbstractDAO() {
-		// TODO Auto-generated constructor stub
 		super((DataSource) new ClassPathXmlApplicationContext(
 				"META-INF/config/spring/application-context.xml").getBean("businessDataSource"));
 	}

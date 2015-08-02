@@ -22,7 +22,6 @@ public class RegisterBiz {
 		return tbmSmUserDQM;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public int createUserInfo(TbmSmUserDVO tbmSmUserDVO) throws Exception {
 		String uniqueSeq = SysUtil.getUUID().replaceAll("-", "").concat(SecurityUtil.HASH_MD5(tbmSmUserDVO.getUserId()));
 		tbmSmUserDVO.setUniqueSeq(uniqueSeq);

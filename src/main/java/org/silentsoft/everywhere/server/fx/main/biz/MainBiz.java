@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
+import org.silentsoft.everywhere.context.model.table.TbpEwCloudDVO;
 import org.silentsoft.everywhere.server.util.BeanUtil;
+import org.silentsoft.everywhere.server.util.CrudUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,5 +26,9 @@ public class MainBiz {
 	@SuppressWarnings("unchecked")
 	public List<Notice002DVO> getNotices(Map<String, Object> inputMap) {
 		return getMainDQM().getNotices(inputMap);
+	}
+	
+	public int insertCloudInfo(TbpEwCloudDVO tbpEwCloudDVO) throws Exception {
+		return CrudUtil.create(tbpEwCloudDVO);
 	}
 }

@@ -29,7 +29,7 @@ public class MainService {
 		return getMainBiz().getNotices(inputMap);
 	}
 	
-	public int insertCloudInfo(TbpEwCloudDVO inputDVO) throws Exception {
-		return getMainBiz().insertCloudInfo(inputDVO);
+	public int saveCloudInfo(TbpEwCloudDVO inputDVO) throws Exception {
+		return getMainBiz().saveCloudInfo(inputDVO);
 	}
 }

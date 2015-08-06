@@ -28,7 +28,7 @@ public class MainBiz {
 		return getMainDQM().getNotices(inputMap);
 	}
 	
-	public int insertCloudInfo(TbpEwCloudDVO tbpEwCloudDVO) throws Exception {
-		return CrudUtil.create(tbpEwCloudDVO);
+	public int saveCloudInfo(TbpEwCloudDVO tbpEwCloudDVO) throws Exception {
+		return CrudUtil.save(tbpEwCloudDVO);
 	}
 }

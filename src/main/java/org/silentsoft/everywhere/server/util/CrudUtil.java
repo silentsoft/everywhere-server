@@ -17,6 +17,8 @@ import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.server.core.MetaDAO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 
 public class CrudUtil {
 	
@@ -52,6 +54,36 @@ public class CrudUtil {
 		String insertStatement = createInsertStatement(dvo);
 
 		return getMetaDAO().update(insertStatement, map);
+	}
+	
+	// TODO : must vertify this method.
+	public static <T> int[] createBatch(final List<T> dvoList) throws Exception {
+		if (dvoList == null || dvoList.size() < 1) {
+			return new int[]{ -1 };
+		}
+		
+		for (int i=0, j=dvoList.size(); i<j; i++) {
+			T dvo = dvoList.get(i);
+			
+			ObjectUtil.bindValue(dvo, "useYn", "Y");
+			ObjectUtil.bindValue(dvo, "delYn", "N");
+
+			String dbCurrentTime = getMetaDAO().getCurrentTime();
+			ObjectUtil.bindValue(dvo, "fstRegDt", dbCurrentTime);
+			ObjectUtil.bindValue(dvo, "fnlUpdDt", dbCurrentTime);
+			
+			String userId = ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
+			ObjectUtil.bindValue(dvo, "fstRegerId", userId);
+			ObjectUtil.bindValue(dvo, "fnlUpderId", userId);
+			
+			dvoList.set(i, dvo);
+		}
+		
+		String insertStatement = createInsertStatement(dvoList.get(0));
+		
+		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(dvoList.toArray());
+		
+		return getMetaDAO().batchUpdate(insertStatement, batch);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -147,6 +179,74 @@ public class CrudUtil {
 
 			return update(dvo);
 		}
+	}
+	
+	public static <T> int save(final T dvo) throws Exception {
+		return save(dvo, true, true);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <T> int save(final T dvo, boolean addUseYn, boolean addDelYn) throws Exception {
+		Class<? extends Object> classType = dvo.getClass();
+		
+		// map객체가 비어있는 경우 종료
+		if (ObjectUtil.isEmpty(dvo)) {
+			throw new Exception("Parameter DVO cannot be empty !");
+		}
+		
+		String tableName = getTableName(classType);
+
+		// PK컬럼목록 반환.
+		List<String> pkColumns = getMetaDAO().getPKColumns(tableName);
+
+		// 진행처리가 가능한지 validation 체크
+		if (checkPK(tableName, pkColumns, ObjectUtil.toMap(dvo))) {
+
+			// DB에 저장된값
+			T t = get(dvo);
+
+			if (t == null) {
+				// insert
+				ObjectUtil.bindValue(dvo, "useYn", "Y");
+				ObjectUtil.bindValue(dvo, "delYn", "N");
+		
+				String dbCurrentTime = getMetaDAO().getCurrentTime();
+				ObjectUtil.bindValue(dvo, "fstRegDt", dbCurrentTime);
+				ObjectUtil.bindValue(dvo, "fnlUpdDt", dbCurrentTime);
+				
+				String userId = ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
+				ObjectUtil.bindValue(dvo, "fstRegerId", userId);
+				ObjectUtil.bindValue(dvo, "fnlUpderId", userId);
+		
+				Map<String, Object> map = ObjectUtil.toMap(dvo);
+				
+				String insertStatement = createInsertStatement(dvo);
+		
+				return getMetaDAO().update(insertStatement, map);
+			} else {
+				// update
+				
+				// DB에 저장된값 기준으로 파라미터 입력DVO와 다른것은 UPDATE 대상으로 판단한다.
+				T compare = objectMerge(dvo, t, pkColumns);
+				
+				// Data Map 반환.
+				Map<String, Object> map = ObjectUtil.toMap(compare);
+
+				if (validateSchema(map, pkColumns)) {
+					String dbCurrentTime = getMetaDAO().getCurrentTime();
+					ObjectUtil.bindMapValue(map, "fnlUpdDt", dbCurrentTime);
+
+					String userId = ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
+					ObjectUtil.bindMapValue(map, "fnlUpderId", userId);
+					
+					String updateStatement = createUpdateStatement(tableName, map, pkColumns, addUseYn, addDelYn);
+					
+					return getMetaDAO().update(updateStatement, map);
+				}
+			}
+		}
+		
+		return -1;
 	}
 	
 	private static String createSelectStatement(String tableName, List<String> pkColumns) throws Exception {

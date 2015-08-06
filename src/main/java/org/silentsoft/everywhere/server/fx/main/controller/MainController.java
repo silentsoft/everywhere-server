@@ -79,7 +79,7 @@ public class MainController {
 					cloudRootDirectory.mkdirs();
 				}
 				
-				String filePath = cloudRoot + filePOJO.getPath();// + File.separator + filePOJO.getName() + CommonConst.DOT + filePOJO.getExtension();
+				String filePath = cloudRoot + filePOJO.getPath();
 				File destination = new File(filePath);
 				
 				if (!destination.getParentFile().exists()) {
@@ -100,8 +100,7 @@ public class MainController {
 		inputDVO.setDirectoryYn((filePOJO.isDirectory() == true ? "Y" : "N"));
 		inputDVO.setFilePath(filePOJO.getPath());
 		
-		// TODO : what if already inserted cloud info ?
-		mainService.insertCloudInfo(inputDVO);
+		mainService.saveCloudInfo(inputDVO);
 	}
 
 }

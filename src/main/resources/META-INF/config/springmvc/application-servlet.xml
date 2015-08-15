@@ -11,7 +11,7 @@
 
 	<mvc:annotation-driven />
 
-	<context:component-scan base-package="org.silentsoft.everywhere.server.fx" />
+	<context:component-scan base-package="org.silentsoft.everywhere.server.core.controller, org.silentsoft.everywhere.server.fx" />
 
 	<!-- Configure to plugin JSON as request and response in method handler -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

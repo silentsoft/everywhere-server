@@ -8,11 +8,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class AbstractDAO extends NamedParameterJdbcTemplate {
-
+	
 	@SuppressWarnings("resource")
 	public AbstractDAO() {
-		super((DataSource) new ClassPathXmlApplicationContext(
-				"META-INF/config/spring/application-context.xml").getBean("businessDataSource"));
+		super((DataSource) new ClassPathXmlApplicationContext("META-INF/config/spring/application-context.xml").getBean("businessDataSource"));
 	}
 	
 	@SuppressWarnings("rawtypes")

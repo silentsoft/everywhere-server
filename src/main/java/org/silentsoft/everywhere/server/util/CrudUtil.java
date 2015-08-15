@@ -14,7 +14,9 @@ import java.util.StringTokenizer;
 import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.BizConst;
 import org.silentsoft.everywhere.context.core.SharedThreadMemory;
+import org.silentsoft.everywhere.server.PropertyKey;
 import org.silentsoft.everywhere.server.core.MetaDAO;
+import org.silentsoft.everywhere.server.core.type.DatabaseType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -586,6 +588,7 @@ public class CrudUtil {
 		}
 
 		sb.append(Character.toUpperCase(simpleName.charAt(0)));
+		
 		for (int i = 1; i < simpleName.length(); i++)
 		{
 			char charAt = simpleName.charAt(i);
@@ -598,7 +601,19 @@ public class CrudUtil {
 
 		}
 
-		return sb.toString();
+		String tableName = sb.toString();
+		
+		DatabaseType databaseType = Enum.valueOf(DatabaseType.class, SysUtil.getProperty(PropertyKey.CACHE_DATABASE_TYPE));
+		switch (databaseType) {
+		case Oracle:
+			tableName = tableName.toUpperCase();
+			break;
+		case PostgreSQL:
+			tableName = tableName.toLowerCase();
+			break;
+		}
+		
+		return tableName;
 	}
 	
 	private static String toTableColumnName(String fieldName) {
@@ -614,6 +629,7 @@ public class CrudUtil {
 				sb.append(Character.toUpperCase(charArray[i]));
 			}
 		}
+		
 		return sb.toString();
 	}
 	

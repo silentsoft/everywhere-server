@@ -79,7 +79,7 @@ public class MainController {
 					cloudRootDirectory.mkdirs();
 				}
 				
-				String filePath = cloudRoot + filePOJO.getPath();
+				String filePath = cloudRoot + File.separator + filePOJO.getPath();
 				File destination = new File(filePath);
 				
 				if (!destination.getParentFile().exists()) {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
@@ -89,7 +90,10 @@ public class MainController {
 				if (destination.exists()) {
 					destination.delete();
 				}
+				
 				multipartFile.transferTo(destination);
+				
+				break;
 			}
 			
 			LOGGER.debug("Successfully create a file !");
@@ -99,6 +103,12 @@ public class MainController {
 		inputDVO.setUserId(userVO.getUserId());
 		inputDVO.setDirectoryYn((filePOJO.isDirectory() == true ? "Y" : "N"));
 		inputDVO.setFilePath(filePOJO.getPath());
+		if (ObjectUtil.isEmpty(filePOJO.getExtension())) {
+			inputDVO.setFileName(filePOJO.getName());
+		} else {
+			inputDVO.setFileName(filePOJO.getName() + CommonConst.DOT + filePOJO.getExtension());
+		}
+		inputDVO.setFileSize(filePOJO.getSize());
 		
 		mainService.saveCloudInfo(inputDVO);
 	}

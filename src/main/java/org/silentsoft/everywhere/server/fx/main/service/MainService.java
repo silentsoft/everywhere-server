@@ -3,6 +3,7 @@ package org.silentsoft.everywhere.server.fx.main.service;
 import java.util.List;
 import java.util.Map;
 
+import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
 import org.silentsoft.everywhere.context.model.table.TbpEwCloudDVO;
 import org.silentsoft.everywhere.server.fx.main.biz.MainBiz;
@@ -29,7 +30,11 @@ public class MainService {
 		return getMainBiz().getNotices(inputMap);
 	}
 	
-	public int saveCloudInfo(TbpEwCloudDVO inputDVO) throws Exception {
-		return getMainBiz().saveCloudInfo(inputDVO);
+	public List<Cloud002DVO> getClouds(Map<String, Object> inputMap) {
+		return getMainBiz().getClouds(inputMap);
+	}
+	
+	public int saveCloud(TbpEwCloudDVO inputDVO) throws Exception {
+		return getMainBiz().saveCloud(inputDVO);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.core.util.ObjectUtil;
+import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
 import org.silentsoft.everywhere.context.model.UserVO;
@@ -53,6 +54,28 @@ public class MainController {
 		mainSVO.setNotice002DVOList(notice002DVOList);
 		
 		return mainSVO;
+	}
+	
+	@RequestMapping(value="/cloud", method=RequestMethod.POST)
+	@ResponseBody
+	public MainSVO getClouds(@RequestBody String json) throws Exception {
+		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
+		
+		MainSVO mainSVO = null;
+		
+		try {
+			mainSVO = JSONUtil.JSONToObject(json, MainSVO.class);
+		} catch (Exception e) {
+			LOGGER.error("Failed parse json to object !", new Object[]{e});
+		}
+		
+		Map inputMap = ObjectUtil.toMap(mainSVO.getCloud001DVO());
+		List<Cloud002DVO> cloud002DVOList = mainService.getClouds(inputMap);
+		
+		mainSVO.setCloud002DVOList(cloud002DVOList);
+		
+		return mainSVO;
+		
 	}
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
@@ -110,7 +133,7 @@ public class MainController {
 		}
 		inputDVO.setFileSize(filePOJO.getSize());
 		
-		mainService.saveCloudInfo(inputDVO);
+		mainService.saveCloud(inputDVO);
 	}
 
 }

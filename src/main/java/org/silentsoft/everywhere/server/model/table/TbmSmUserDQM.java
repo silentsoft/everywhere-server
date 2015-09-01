@@ -39,7 +39,7 @@ public class TbmSmUserDQM extends AbstractDAO {
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		if (countMap(inputMap) > 0) {
-			if (validKey(inputMap, "singleId")) {
+			if (isValidKey(inputMap, "singleId")) {
 				data.put("singleId", inputMap.get("singleId"));
 			}
 		}

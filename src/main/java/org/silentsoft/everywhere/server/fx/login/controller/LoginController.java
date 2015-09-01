@@ -39,8 +39,10 @@ public class LoginController {
 		
 		TbmSmUserDVO outputDVO = loginService.getTbmSmUserDVO(inputDVO);
 		if (ObjectUtil.isNotEmpty(outputDVO)) {
+			SharedThreadMemory.create();
+			
 			SharedThreadMemory.put(BizConst.KEY_USER_ID, outputDVO.getUserId());
-			SharedThreadMemory.put(BizConst.KEY_USER_NM, outputDVO.getUserNm());
+//			SharedThreadMemory.put(BizConst.KEY_USER_NM, outputDVO.getUserNm());
 			
 			/**
 			 * if want show to past logged in time
@@ -56,6 +58,8 @@ public class LoginController {
 			outputDVO.setFnlAccsIp(inputDVO.getFnlAccsIp());
 			outputDVO.setLangCode(inputDVO.getLangCode());
 			loginService.updateUserInfo(outputDVO);
+			
+			SharedThreadMemory.delete();
 		}
 		
 		return outputDVO;

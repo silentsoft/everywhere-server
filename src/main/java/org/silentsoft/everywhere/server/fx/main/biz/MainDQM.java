@@ -65,7 +65,7 @@ public class MainDQM extends AbstractDAO {
 		
 		Map<String, Object> data = new HashMap<String, Object>();
 		if (countMap(inputMap) > 0) {
-			if (validKey(inputMap, "langCode")) {
+			if (isValidKey(inputMap, "langCode")) {
 				data.put("langCode", inputMap.get("langCode"));
 			}
 		}
@@ -105,7 +105,7 @@ public class MainDQM extends AbstractDAO {
 		
 		Map<String, Object> data = new HashMap<String, Object>();
 		if (countMap(inputMap) > 0) {
-			if (validKey(inputMap, "userId")) {
+			if (isValidKey(inputMap, "userId")) {
 				data.put("userId", inputMap.get("userId"));
 			}
 		}

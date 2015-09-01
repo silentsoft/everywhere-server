@@ -3,6 +3,8 @@ package org.silentsoft.everywhere.server.util;
 import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.data.DataMap;
 import org.silentsoft.core.util.ObjectUtil;
+import org.silentsoft.everywhere.context.BizConst;
+import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.server.core.MetaDAO;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -27,6 +29,10 @@ public final class SysUtil {
 		}
 		
 		return cacheMap;
+	}
+	
+	public static String getUserId() {
+		return ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
 	}
 	
 	public static String getCurrentTime() {

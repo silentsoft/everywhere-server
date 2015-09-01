@@ -10,7 +10,6 @@ import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
-import org.silentsoft.everywhere.context.model.UserVO;
 import org.silentsoft.everywhere.context.model.pojo.FilePOJO;
 import org.silentsoft.everywhere.context.model.table.TbpEwCloudDVO;
 import org.silentsoft.everywhere.server.PropertyKey;
@@ -80,13 +79,11 @@ public class MainController {
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
 	@ResponseBody
-	public void upload(@RequestParam("user") String user, @RequestParam("json") String json, @RequestParam("binary") MultipartFile[] files) throws Exception {
+	public void upload(@RequestParam("json") String json, @RequestParam("binary") MultipartFile[] files) throws Exception {
 		//LOGGER.debug("i got json string.. <{}>", new Object[]{json});
-		UserVO userVO = null;
 		FilePOJO filePOJO = null;
 		
 		try {
-			userVO = JSONUtil.JSONToObject(user, UserVO.class);
 			filePOJO = JSONUtil.JSONToObject(json, FilePOJO.class);
 		} catch (Exception e) {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
@@ -123,7 +120,7 @@ public class MainController {
 		}
 		
 		TbpEwCloudDVO inputDVO = new TbpEwCloudDVO();
-		inputDVO.setUserId(userVO.getUserId());
+		inputDVO.setUserId(SysUtil.getUserId());
 		inputDVO.setDirectoryYn((filePOJO.isDirectory() == true ? "Y" : "N"));
 		inputDVO.setFilePath(filePOJO.getPath());
 		if (ObjectUtil.isEmpty(filePOJO.getExtension())) {

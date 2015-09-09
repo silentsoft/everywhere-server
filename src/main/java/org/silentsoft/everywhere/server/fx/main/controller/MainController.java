@@ -122,12 +122,15 @@ public class MainController {
 		TbpEwCloudDVO inputDVO = new TbpEwCloudDVO();
 		inputDVO.setUserId(SysUtil.getUserId());
 		inputDVO.setDirectoryYn((filePOJO.isDirectory() == true ? "Y" : "N"));
-		inputDVO.setFilePath(filePOJO.getPath());
 		if (ObjectUtil.isEmpty(filePOJO.getExtension())) {
 			inputDVO.setFileName(filePOJO.getName());
 		} else {
 			inputDVO.setFileName(filePOJO.getName() + CommonConst.DOT + filePOJO.getExtension());
 		}
+		String filePath = File.separator.concat(filePOJO.getPath());
+		filePath = filePath.substring(0, filePath.length()-inputDVO.getFileName().length());
+		filePath = (filePath.length() > 1 && filePath.endsWith(File.separator)) ? filePath.substring(0, filePath.length()-1) : filePath;
+		inputDVO.setFilePath(filePath);
 		inputDVO.setFileSize(filePOJO.getSize());
 		
 		mainService.saveCloud(inputDVO);

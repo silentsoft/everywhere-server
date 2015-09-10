@@ -22,12 +22,10 @@ public class AuthenticationFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
 	
-	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
 	}
 	
-	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -52,7 +50,6 @@ public class AuthenticationFilter implements Filter {
 		}
 	}
 	
-	@Override
 	public void destroy() {
 		
 	}

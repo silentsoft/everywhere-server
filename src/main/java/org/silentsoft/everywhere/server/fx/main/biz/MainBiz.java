@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
+import org.silentsoft.everywhere.context.fx.main.vo.CloudDirectoryOutDVO;
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
 import org.silentsoft.everywhere.context.model.table.TbpEwCloudDVO;
 import org.silentsoft.everywhere.server.util.BeanUtil;
@@ -27,6 +28,10 @@ public class MainBiz {
 	@SuppressWarnings("unchecked")
 	public List<Notice002DVO> getNotices(Map<String, Object> inputMap) {
 		return getMainDQM().getNotices(inputMap);
+	}
+	
+	public List<CloudDirectoryOutDVO> getCloudDirectory(Map<String, Object> inputMap) {
+		return getMainDQM().getCloudDirectory(inputMap);
 	}
 	
 	public List<Cloud002DVO> getClouds(Map<String, Object> inputMap) {

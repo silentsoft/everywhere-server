@@ -8,6 +8,7 @@ import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
+import org.silentsoft.everywhere.context.fx.main.vo.CloudDirectoryOutDVO;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
 import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
 import org.silentsoft.everywhere.context.model.pojo.FilePOJO;
@@ -51,6 +52,29 @@ public class MainController {
 		List<Notice002DVO> notice002DVOList = mainService.getNotices(inputMap);
 		
 		mainSVO.setNotice002DVOList(notice002DVOList);
+		
+		return mainSVO;
+	}
+	
+	@RequestMapping(value="/cloudDirectory", method=RequestMethod.POST)
+	@ResponseBody
+	public MainSVO getCloudDirectory(@RequestBody String json) throws Exception {
+		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
+		
+		MainSVO mainSVO = null;
+		
+		try {
+			mainSVO = JSONUtil.JSONToObject(json, MainSVO.class);
+		} catch (Exception e) {
+			LOGGER.error("Failed parse json to object !", new Object[]{e});
+		}
+		
+		mainSVO.getCloudDirectoryInDVO().setUserId(SysUtil.getUserId());
+		
+		Map inputMap = ObjectUtil.toMap(mainSVO.getCloudDirectoryInDVO());
+		List<CloudDirectoryOutDVO> cloudDirectoryOutDVOList = mainService.getCloudDirectory(inputMap);
+		
+		mainSVO.setCloudDirectoryOutDVOList(cloudDirectoryOutDVOList);
 		
 		return mainSVO;
 	}
@@ -127,7 +151,7 @@ public class MainController {
 		} else {
 			inputDVO.setFileName(filePOJO.getName() + CommonConst.DOT + filePOJO.getExtension());
 		}
-		String filePath = File.separator.concat(filePOJO.getPath());
+		String filePath = filePOJO.getPath().startsWith(File.separator) ? filePOJO.getPath() : File.separator.concat(filePOJO.getPath());
 		filePath = filePath.substring(0, filePath.length()-inputDVO.getFileName().length());
 		filePath = (filePath.length() > 1 && filePath.endsWith(File.separator)) ? filePath.substring(0, filePath.length()-1) : filePath;
 		inputDVO.setFilePath(filePath);

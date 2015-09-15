@@ -13,7 +13,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<!-- logging -->
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
-		<param-value>classpath:META-INF/config/log4j.xml</param-value>
+		<param-value>classpath:log4j.xml</param-value>
 	</context-param>
 	<context-param>
 		<description>Interval between config file refresh checks, in

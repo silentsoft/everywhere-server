@@ -15,8 +15,7 @@
 		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
 		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd">
 	
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<value>classpath:META-INF/config/properties/*.properties</value>
 		</property>
@@ -32,11 +31,24 @@
 		<property name="maxIdle" value="${dataSource.maxIdle}"/>
 		<property name="maxWait" value="${dataSource.maxWait}"/>
 		<property name="timeBetweenEvictionRunsMillis" value="${dataSource.timeBetweenEvictionRunsMillis}"/>
+		<property name="defaultAutoCommit" value="false"/>
+		<property name="commitOnReturn" value="true"/>
+		<property name="testOnBorrow" value="true"/>
+		<property name="testOnReturn" value="true"/>
+		
+		<!-- PostgreSQL -->
+		<property name="validationQuery" value="SELECT 1"/>
+		
+		<!-- Oracle -->
+<!-- 		<property name="validationQuery" value="SELECT 1 FROM DUAL"/> -->
 	</bean>
 	
-	<bean id="businessTxManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="businessDataSource" />
+	</bean>
+	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
 	</bean>
 	
 	<bean id="beans" class="org.silentsoft.everywhere.server.util.BeanUtil"></bean>

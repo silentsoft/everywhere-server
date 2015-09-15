@@ -1,8 +1,11 @@
 package org.silentsoft.everywhere.server.fx.register.controller;
 
 import org.silentsoft.core.util.JSONUtil;
+import org.silentsoft.everywhere.context.BizConst;
+import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
 import org.silentsoft.everywhere.server.fx.register.service.RegisterService;
+import org.silentsoft.everywhere.server.util.TransactionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +36,16 @@ public class RegisterController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
+		SharedThreadMemory.create();
+		
+		SharedThreadMemory.put(BizConst.KEY_USER_ID, inputDVO.getUserId());
+		
 		if (registerService.createUserInfo(inputDVO) != -1) {
+			SharedThreadMemory.delete();
 			return inputDVO;
 		}
+		
+		SharedThreadMemory.delete();
 		
 		return null;
 	}

@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.AbstractRefreshableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
 public class BeanUtil implements ApplicationContextAware {
@@ -21,6 +22,10 @@ public class BeanUtil implements ApplicationContextAware {
 	
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		BeanUtil.applicationContext = applicationContext;
+	}
+	
+	public static void setApplicationContextForJUnitTest() {
+		BeanUtil.applicationContext = new ClassPathXmlApplicationContext("META-INF/config/spring/application-context.xml");
 	}
 
 	public static <T> T getBean(Class<T> clazz) {

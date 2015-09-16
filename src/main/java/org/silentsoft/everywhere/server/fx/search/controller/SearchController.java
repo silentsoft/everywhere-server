@@ -34,6 +34,6 @@ public class SearchController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		return searchService.getTbmSmUserDVO(inputDVO);
+		return searchService.getUserInfo(inputDVO);
 	}
 }

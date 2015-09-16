@@ -1,18 +1,13 @@
 package org.silentsoft.everywhere.server.fx.main.controller;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
-import org.silentsoft.core.CommonConst;
+import org.apache.commons.io.IOUtils;
 import org.silentsoft.core.util.JSONUtil;
-import org.silentsoft.core.util.ObjectUtil;
-import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
-import org.silentsoft.everywhere.context.fx.main.vo.CloudDirectoryOutDVO;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
-import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
 import org.silentsoft.everywhere.context.model.pojo.FilePOJO;
-import org.silentsoft.everywhere.context.model.table.TbpEwCloudDVO;
 import org.silentsoft.everywhere.server.PropertyKey;
 import org.silentsoft.everywhere.server.fx.main.service.MainService;
 import org.silentsoft.everywhere.server.util.SysUtil;
@@ -48,12 +43,7 @@ public class MainController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		Map inputMap = ObjectUtil.toMap(mainSVO.getNotice001DVO());
-		List<Notice002DVO> notice002DVOList = mainService.getNotices(inputMap);
-		
-		mainSVO.setNotice002DVOList(notice002DVOList);
-		
-		return mainSVO;
+		return mainService.getNotices(mainSVO);
 	}
 	
 	@RequestMapping(value="/cloudDirectory", method=RequestMethod.POST)
@@ -69,36 +59,7 @@ public class MainController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		mainSVO.getCloudDirectoryInDVO().setUserId(SysUtil.getUserId());
-		
-		Map inputMap = ObjectUtil.toMap(mainSVO.getCloudDirectoryInDVO());
-		List<CloudDirectoryOutDVO> cloudDirectoryOutDVOList = mainService.getCloudDirectory(inputMap);
-		
-		mainSVO.setCloudDirectoryOutDVOList(cloudDirectoryOutDVOList);
-		
-		return mainSVO;
-	}
-	
-	@RequestMapping(value="/cloud", method=RequestMethod.POST)
-	@ResponseBody
-	public MainSVO getClouds(@RequestBody String json) throws Exception {
-		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
-		
-		MainSVO mainSVO = null;
-		
-		try {
-			mainSVO = JSONUtil.JSONToObject(json, MainSVO.class);
-		} catch (Exception e) {
-			LOGGER.error("Failed parse json to object !", new Object[]{e});
-		}
-		
-		Map inputMap = ObjectUtil.toMap(mainSVO.getCloud001DVO());
-		List<Cloud002DVO> cloud002DVOList = mainService.getClouds(inputMap);
-		
-		mainSVO.setCloud002DVOList(cloud002DVOList);
-		
-		return mainSVO;
-		
+		return mainService.getCloudDirectory(mainSVO);
 	}
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
@@ -113,24 +74,22 @@ public class MainController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
+		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT) + filePOJO.getUserUniqueSeq();
+		String filePath = cloudRoot + File.separator + filePOJO.getPath();
+		File destination = new File(filePath);
+		
 		if (filePOJO.isDirectory()) {
+			if (destination.exists()) {
+				destination.delete();
+			}
 			
+			destination.mkdirs();
 		} else {
-			String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT) + filePOJO.getUserUniqueSeq();
-			File cloudRootDirectory = new File(cloudRoot);
-			
 			for (MultipartFile multipartFile : files) {
-				if (!cloudRootDirectory.exists()) {
-					cloudRootDirectory.mkdirs();
-				}
-				
-				String filePath = cloudRoot + File.separator + filePOJO.getPath();
-				File destination = new File(filePath);
-				
 				if (!destination.getParentFile().exists()) {
 					destination.getParentFile().mkdirs();
 				}
-	
+
 				if (destination.exists()) {
 					destination.delete();
 				}
@@ -139,25 +98,18 @@ public class MainController {
 				
 				break;
 			}
-			
-			LOGGER.debug("Successfully create a file !");
 		}
 		
-		TbpEwCloudDVO inputDVO = new TbpEwCloudDVO();
-		inputDVO.setUserId(SysUtil.getUserId());
-		inputDVO.setDirectoryYn((filePOJO.isDirectory() == true ? "Y" : "N"));
-		if (ObjectUtil.isEmpty(filePOJO.getExtension())) {
-			inputDVO.setFileName(filePOJO.getName());
-		} else {
-			inputDVO.setFileName(filePOJO.getName() + CommonConst.DOT + filePOJO.getExtension());
-		}
-		String filePath = filePOJO.getPath().startsWith(File.separator) ? filePOJO.getPath() : File.separator.concat(filePOJO.getPath());
-		filePath = filePath.substring(0, filePath.length()-inputDVO.getFileName().length());
-		filePath = (filePath.length() > 1 && filePath.endsWith(File.separator)) ? filePath.substring(0, filePath.length()-1) : filePath;
-		inputDVO.setFilePath(filePath);
-		inputDVO.setFileSize(filePOJO.getSize());
+		LOGGER.debug("Successfully create a file !");
 		
-		mainService.saveCloud(inputDVO);
+		mainService.saveCloud(filePOJO);
+	}
+	
+	@RequestMapping(value="/download", method=RequestMethod.POST)
+	@ResponseBody
+	public byte[] download(@RequestBody String json) throws Exception {
+		InputStream inputStream = new FileInputStream(new File("D:\\tmp\\AIViewer50Install_forVISTA.exe"));
+		return IOUtils.toByteArray(inputStream);
 	}
 
 }

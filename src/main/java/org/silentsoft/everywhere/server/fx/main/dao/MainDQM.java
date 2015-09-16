@@ -1,4 +1,4 @@
-package org.silentsoft.everywhere.server.fx.main.biz;
+package org.silentsoft.everywhere.server.fx.main.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.silentsoft.everywhere.context.fx.main.vo.Cloud002DVO;
 import org.silentsoft.everywhere.context.fx.main.vo.CloudDirectoryOutDVO;
-import org.silentsoft.everywhere.context.fx.main.vo.Notice002DVO;
+import org.silentsoft.everywhere.context.fx.main.vo.NoticeOutDVO;
 import org.silentsoft.everywhere.server.core.AbstractDAO;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -74,7 +73,7 @@ public class MainDQM extends AbstractDAO {
 		return query(sql.toString(), data, new RowMapper() {
 			public Object mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 				
-				Notice002DVO returnDVO = new Notice002DVO();
+				NoticeOutDVO returnDVO = new NoticeOutDVO();
 				returnDVO.setNoticeDt(resultSet.getString("NOTICE_DT"));
 				returnDVO.setLangCode(resultSet.getString("LANG_CODE"));
 				returnDVO.setTitle(resultSet.getString("TITLE"));
@@ -123,43 +122,6 @@ public class MainDQM extends AbstractDAO {
 				returnDVO.setFileName(resultSet.getString("FILE_NAME"));
 				returnDVO.setFileSize(resultSet.getString("FILE_SIZE"));
 				returnDVO.setFnlUpdDt(resultSet.getString("FNL_UPD_DT"));
-				
-				return returnDVO;
-			}
-		});
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List getClouds(final Map inputMap) {
-		
-		StringBuffer sql = new StringBuffer();
-		
-		sql.append("SELECT FILE_PATH, \n");
-		sql.append("       DIRECTORY_YN, \n");
-		sql.append("       FILE_NAME, \n");
-		sql.append("       FILE_SIZE, \n");
-		sql.append("       DEL_YN \n");
-		sql.append("  FROM TBP_EW_CLOUD \n");
-		sql.append(" WHERE 1=1 \n");
-		sql.append("   AND USER_ID = :userId \n");
-		sql.append("   AND USE_YN = 'Y' \n");
-		
-		Map<String, Object> data = new HashMap<String, Object>();
-		if (countMap(inputMap) > 0) {
-			if (isValidKey(inputMap, "userId")) {
-				data.put("userId", inputMap.get("userId"));
-			}
-		}
-		
-		return query(sql.toString(), data, new RowMapper() {
-			public Object mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-				
-				Cloud002DVO returnDVO = new Cloud002DVO();
-				returnDVO.setFilePath(resultSet.getString("FILE_PATH"));
-				returnDVO.setDirectoryYn(resultSet.getString("DIRECTORY_YN"));
-				returnDVO.setFileName(resultSet.getString("FILE_NAME"));
-				returnDVO.setFileSize(resultSet.getString("FILE_SIZE"));
-				returnDVO.setDelYn(resultSet.getString("DEL_YN"));
 				
 				return returnDVO;
 			}

@@ -22,9 +22,8 @@ public final class TransactionUtil {
 		return transactionTemplate;
 	}
 	
-	public static <T> T doScope(ITransactionScope<T> iTransactionScope) {
+	public static <T> T doScope(final ITransactionScope<T> iTransactionScope) {
 		return getTransactionTemplate().execute(new TransactionCallback<T>() {
-			@Override
 			public T doInTransaction(TransactionStatus transactionStatus) {
 				T result = null;
 				
@@ -40,9 +39,8 @@ public final class TransactionUtil {
 		});
 	}
 	
-	public static <T> T doScope(ITransactionScope<T> iTransactionScope, IErrorScope<T> iErrorScope) {
+	public static <T> T doScope(final ITransactionScope<T> iTransactionScope, final IErrorScope<T> iErrorScope) {
 		return getTransactionTemplate().execute(new TransactionCallback<T>() {
-			@Override
 			public T doInTransaction(TransactionStatus transactionStatus) {
 				T result = null;
 				

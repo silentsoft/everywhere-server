@@ -3,7 +3,10 @@ package org.silentsoft.everywhere.server.fx.main.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
@@ -14,6 +17,7 @@ import org.silentsoft.everywhere.server.util.SysUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -107,9 +111,16 @@ public class MainController {
 	
 	@RequestMapping(value="/download", method=RequestMethod.POST)
 	@ResponseBody
-	public byte[] download(@RequestBody String json) throws Exception {
-		InputStream inputStream = new FileInputStream(new File("D:\\tmp\\AIViewer50Install_forVISTA.exe"));
-		return IOUtils.toByteArray(inputStream);
+	public FilePOJO download(@RequestBody String json) throws Exception {
+		FilePOJO filePOJO = new FilePOJO();
+		filePOJO.setName("Autorun");
+		filePOJO.setExtension("inf");
+		filePOJO.setDirectory(false);
+		FileInputStream fileInputStream = new FileInputStream(new File("H:\\iTunes64Setup.exe"));
+		filePOJO.setBytes(IOUtils.toByteArray(fileInputStream));
+		fileInputStream.close();
+
+		return filePOJO;
 	}
 
 }

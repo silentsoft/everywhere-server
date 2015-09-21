@@ -8,16 +8,15 @@ import javax.sql.DataSource;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.silentsoft.everywhere.server.util.BeanUtil;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class AbstractDAO extends NamedParameterJdbcTemplate {
 	
-	@SuppressWarnings("resource")
 	public AbstractDAO() {
-		super((DataSource) new ClassPathXmlApplicationContext("META-INF/config/spring/application-context.xml").getBean("businessDataSource"));
+		super(BeanUtil.get("businessDataSource", DataSource.class));
 	}
 	
 	@SuppressWarnings("rawtypes")

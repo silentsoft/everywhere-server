@@ -31,8 +31,6 @@
 		<property name="maxIdle" value="${dataSource.maxIdle}"/>
 		<property name="maxWait" value="${dataSource.maxWait}"/>
 		<property name="timeBetweenEvictionRunsMillis" value="${dataSource.timeBetweenEvictionRunsMillis}"/>
-		<property name="defaultAutoCommit" value="false"/>
-		<property name="commitOnReturn" value="true"/>
 		<property name="testOnBorrow" value="true"/>
 		<property name="testOnReturn" value="true"/>
 		

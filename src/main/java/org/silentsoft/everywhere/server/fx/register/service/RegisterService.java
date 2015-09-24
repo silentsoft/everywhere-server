@@ -1,7 +1,7 @@
 package org.silentsoft.everywhere.server.fx.register.service;
 
 import org.silentsoft.core.util.ObjectUtil;
-import org.silentsoft.core.util.SysUtil;
+import org.silentsoft.core.util.SystemUtil;
 import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
 import org.silentsoft.everywhere.context.util.SecurityUtil;
 import org.silentsoft.everywhere.server.fx.search.service.SearchService;
@@ -36,7 +36,7 @@ public class RegisterService {
 			return -1;
 		}
 		
-		String uniqueSeq = SysUtil.getUUID().replaceAll("-", "").concat(SecurityUtil.HASH_MD5(tbmSmUserDVO.getUserId()));
+		String uniqueSeq = SystemUtil.getUUID().replaceAll("-", "").concat(SecurityUtil.HASH_MD5(tbmSmUserDVO.getUserId()));
 		tbmSmUserDVO.setUniqueSeq(uniqueSeq);
 		
 		return CrudUtil.create(tbmSmUserDVO);

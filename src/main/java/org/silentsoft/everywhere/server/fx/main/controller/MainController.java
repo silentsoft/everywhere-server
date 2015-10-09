@@ -9,6 +9,8 @@ import java.io.PipedOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.silentsoft.core.util.JSONUtil;
+import org.silentsoft.core.util.SystemUtil;
+import org.silentsoft.core.util.ZipUtil;
 import org.silentsoft.everywhere.context.fx.main.vo.MainSVO;
 import org.silentsoft.everywhere.context.model.pojo.FilePOJO;
 import org.silentsoft.everywhere.server.PropertyKey;
@@ -78,7 +80,7 @@ public class MainController {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT) + filePOJO.getUserUniqueSeq();
+		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT) + SysUtil.getUserUniqueSeq();
 		String filePath = cloudRoot + File.separator + filePOJO.getPath();
 		File destination = new File(filePath);
 		
@@ -112,14 +114,30 @@ public class MainController {
 	@RequestMapping(value="/download", method=RequestMethod.POST)
 	@ResponseBody
 	public FilePOJO download(@RequestBody String json) throws Exception {
-		FilePOJO filePOJO = new FilePOJO();
-		filePOJO.setName("Autorun");
-		filePOJO.setExtension("inf");
-		filePOJO.setDirectory(false);
-		FileInputStream fileInputStream = new FileInputStream(new File("H:\\iTunes64Setup.exe"));
+		//LOGGER.debug("i got json string.. <{}>", new Object[]{json});
+		FilePOJO filePOJO = null;
+		
+		try {
+			filePOJO = JSONUtil.JSONToObject(json, FilePOJO.class);
+		} catch (Exception e) {
+			LOGGER.error("Failed parse json to object !", new Object[]{e});
+		}
+		
+		String cloudRoot = SysUtil.getProperty(PropertyKey.CACHE_CLOUD_ROOT) + SysUtil.getUserUniqueSeq();
+		String filePath = cloudRoot + filePOJO.getPath();
+		filePath = (filePOJO.getPath().equals(File.separator) ? filePath : filePath.concat(File.separator));
+		String zipFilePath = filePath.concat("~".concat(filePOJO.getName()).concat(".zip"));
+		filePath = filePath.concat(filePOJO.getName());
+		
+		new ZipUtil().doZip(filePath, zipFilePath, 3);
+		File downloadZipFile = new File(zipFilePath);
+		
+		FileInputStream fileInputStream = new FileInputStream(downloadZipFile);
 		filePOJO.setBytes(IOUtils.toByteArray(fileInputStream));
 		fileInputStream.close();
 
+		downloadZipFile.delete();
+		
 		return filePOJO;
 	}
 

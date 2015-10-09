@@ -38,6 +38,7 @@ public class AuthenticationFilter implements Filter {
 				SharedThreadMemory.create();
 				
 				SharedThreadMemory.put(BizConst.KEY_USER_ID, request.getHeader("user"));
+				SharedThreadMemory.put(BizConst.KEY_USER_UNIQUE_SEQ, request.getHeader("sequence"));
 				filterChain.doFilter(servletRequest, servletResponse);
 				
 				SharedThreadMemory.delete();

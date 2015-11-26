@@ -2,10 +2,10 @@ package org.silentsoft.everywhere.server.fx.register.controller;
 
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.everywhere.context.BizConst;
-import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
 import org.silentsoft.everywhere.server.fx.register.service.RegisterService;
 import org.silentsoft.everywhere.server.util.TransactionUtil;
+import org.silentsoft.io.memory.SharedThreadMemory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

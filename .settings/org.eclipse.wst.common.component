@@ -10,6 +10,9 @@
         <dependent-module archiveName="silentsoft-core-1.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/silentsoft-core/silentsoft-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="silentsoft-io-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/silentsoft-io/silentsoft-io">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="everywhere-server"/>
         <property name="java-output-path" value="/everywhere-server/target/classes"/>
     </wb-module>

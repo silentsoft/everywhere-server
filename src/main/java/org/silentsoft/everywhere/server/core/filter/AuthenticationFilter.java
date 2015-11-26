@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.BizConst;
-import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.context.util.SecurityUtil;
+import org.silentsoft.io.memory.SharedThreadMemory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

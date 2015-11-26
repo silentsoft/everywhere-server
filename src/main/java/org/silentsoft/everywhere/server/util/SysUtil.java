@@ -1,11 +1,11 @@
 package org.silentsoft.everywhere.server.util;
 
 import org.silentsoft.core.CommonConst;
-import org.silentsoft.core.data.DataMap;
 import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.BizConst;
-import org.silentsoft.everywhere.context.core.SharedThreadMemory;
 import org.silentsoft.everywhere.server.core.MetaDAO;
+import org.silentsoft.io.data.DataMap;
+import org.silentsoft.io.memory.SharedThreadMemory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 

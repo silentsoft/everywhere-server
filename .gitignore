@@ -1,2 +1,2 @@
-*/target/**
+target/
 src/main/resources/META-INF/config/properties/dataSource.properties

@@ -37,7 +37,8 @@ public class AuthenticationFilter implements Filter {
 		 */
 		if (request.getServletPath().length() > 0 && request.getServletPath().startsWith("/fx/")) {
 			if ("/fx/register/authentication".equals(request.getServletPath()) ||
-				"/fx/login/authentication".equals(request.getServletPath())) {
+				"/fx/login/authentication".equals(request.getServletPath()) ||
+				"/fx/sm/store/download".equals(request.getServletPath())) {
 				doFilterWithTransaction(filterChain, servletRequest, servletResponse);
 			} else {
 				if (isValidUser(request)) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/fx/sm/store")
+@RequestMapping("/fx/store")
 @MultipartConfig
 public class StoreController {
 	@Autowired

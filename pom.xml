@@ -17,7 +17,8 @@
 	</repositories>
 
 	<properties>
-	
+		
+		<silentsoft.net.version>1.0.0</silentsoft.net.version>
 		<everywhere.context.version>1.0.0</everywhere.context.version>
 
 		<!-- Generic properties (WARNING : DO NOT REMOVE) -->
@@ -63,6 +64,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.silentsoft</groupId>
+			<artifactId>silentsoft-net</artifactId>
+			<version>${silentsoft.net.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.silentsoft</groupId>
 			<artifactId>everywhere-context</artifactId>

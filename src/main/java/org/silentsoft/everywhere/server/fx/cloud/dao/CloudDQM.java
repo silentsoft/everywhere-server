@@ -1,4 +1,4 @@
-package org.silentsoft.everywhere.server.fx.main.dao;
+package org.silentsoft.everywhere.server.fx.cloud.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.silentsoft.everywhere.context.fx.main.vo.CloudDirectoryOutDVO;
-import org.silentsoft.everywhere.context.fx.main.vo.NoticeOutDVO;
+import org.silentsoft.everywhere.context.fx.cloud.vo.CloudDirectoryOutDVO;
+import org.silentsoft.everywhere.context.fx.cloud.vo.NoticeOutDVO;
 import org.silentsoft.everywhere.server.core.AbstractDAO;
 import org.springframework.jdbc.core.RowMapper;
 
-public class MainDQM extends AbstractDAO {
+public class CloudDQM extends AbstractDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List getNotices(final Map inputMap) {

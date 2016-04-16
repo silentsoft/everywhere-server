@@ -35,4 +35,11 @@ public class SearchService {
 		
 		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean checkUserByPassword(TbmSysUserDVO tbmSysUserDVO) {
+		List<TbmSysUserDVO> returnDVO = getTbmSmUserDQM().getUserBySeqAndPassword(ObjectUtil.toMap(tbmSysUserDVO));
+		
+		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? true : false;
+	}
 }

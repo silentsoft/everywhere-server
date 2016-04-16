@@ -2,7 +2,7 @@ package org.silentsoft.everywhere.server.fx.register.controller;
 
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.everywhere.context.BizConst;
-import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
+import org.silentsoft.everywhere.context.model.table.TbmSysUserDVO;
 import org.silentsoft.everywhere.server.fx.register.service.RegisterService;
 import org.silentsoft.everywhere.server.util.TransactionUtil;
 import org.silentsoft.io.memory.SharedThreadMemory;
@@ -25,13 +25,13 @@ public class RegisterController {
 	
 	@RequestMapping(value="/authentication", method=RequestMethod.POST)
 	@ResponseBody
-	public TbmSmUserDVO createTbmSmUserDVO(@RequestBody String json) throws Exception {
+	public TbmSysUserDVO authentication(@RequestBody String json) throws Exception {
 		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
 		
-		TbmSmUserDVO inputDVO = null;
+		TbmSysUserDVO inputDVO = null;
 		
 		try {
-			inputDVO = JSONUtil.JSONToObject(json, TbmSmUserDVO.class);
+			inputDVO = JSONUtil.JSONToObject(json, TbmSysUserDVO.class);
 		} catch (Exception e) {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}

@@ -1,12 +1,9 @@
 package org.silentsoft.everywhere.server.fx.register.service;
 
+import org.silentsoft.core.util.GenerateUtil;
 import org.silentsoft.core.util.ObjectUtil;
-import org.silentsoft.core.util.SystemUtil;
-import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
-import org.silentsoft.everywhere.context.util.SecurityUtil;
+import org.silentsoft.everywhere.context.model.table.TbmSysUserDVO;
 import org.silentsoft.everywhere.server.fx.search.service.SearchService;
-import org.silentsoft.everywhere.server.model.table.TbmSmUserDQM;
-import org.silentsoft.everywhere.server.util.BeanUtil;
 import org.silentsoft.everywhere.server.util.CrudUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,25 +17,20 @@ public class RegisterService {
 	@Autowired
 	private SearchService searchService;
 	
-	private TbmSmUserDQM tbmSmUserDQM;
-	
-	private TbmSmUserDQM getTbmSmUserDQM() {
-		if (tbmSmUserDQM == null) {
-			tbmSmUserDQM = BeanUtil.getBean(TbmSmUserDQM.class);
-		}
-		
-		return tbmSmUserDQM;
-	}
-	
-	public int createUserInfo(TbmSmUserDVO tbmSmUserDVO) throws Exception {
-		if (ObjectUtil.isNotEmpty(searchService.getUserInfo(tbmSmUserDVO))) {
-			// if already exist user in database..
+	public int createUserInfo(TbmSysUserDVO tbmSysUserDVO) throws Exception {
+		if (ObjectUtil.isNotEmpty(searchService.getUserById(tbmSysUserDVO))) {
+			// if already exist id in database..
 			return -1;
 		}
 		
-		String uniqueSeq = SystemUtil.getUUID().replaceAll("-", "").concat(SecurityUtil.HASH_MD5(tbmSmUserDVO.getUserId()));
-		tbmSmUserDVO.setUniqueSeq(uniqueSeq);
+		if (ObjectUtil.isNotEmpty(searchService.getUserByEmail(tbmSysUserDVO))) {
+			// if already exist email in database..
+			return -1;
+		}
 		
-		return CrudUtil.create(tbmSmUserDVO);
+		tbmSysUserDVO.setUserSeq(GenerateUtil.generateUUID().concat(GenerateUtil.generateUUID()));
+		tbmSysUserDVO.setStoreRoot(GenerateUtil.generateUUID());
+		
+		return CrudUtil.create(tbmSysUserDVO);
 	}
 }

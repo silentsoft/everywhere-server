@@ -3,7 +3,7 @@ package org.silentsoft.everywhere.server.fx.login.controller;
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.core.util.ObjectUtil;
 import org.silentsoft.everywhere.context.BizConst;
-import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
+import org.silentsoft.everywhere.context.model.table.TbmSysUserDVO;
 import org.silentsoft.everywhere.server.fx.login.service.LoginService;
 import org.silentsoft.everywhere.server.util.SysUtil;
 import org.silentsoft.io.memory.SharedThreadMemory;
@@ -26,18 +26,24 @@ public class LoginController {
 	
 	@RequestMapping(value="/authentication", method=RequestMethod.POST)
 	@ResponseBody
-	public TbmSmUserDVO getTbmSmUserDVO(@RequestBody String json) throws Exception {
+	public TbmSysUserDVO getTbmSmUserDVO(@RequestBody String json) throws Exception {
 		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
 		
-		TbmSmUserDVO inputDVO = null;
+		TbmSysUserDVO inputDVO = null;
 		
 		try {
-			inputDVO = JSONUtil.JSONToObject(json, TbmSmUserDVO.class);
+			inputDVO = JSONUtil.JSONToObject(json, TbmSysUserDVO.class);
 		} catch (Exception e) {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		TbmSmUserDVO outputDVO = loginService.getTbmSmUserDVO(inputDVO);
+		TbmSysUserDVO outputDVO = null;
+		if (ObjectUtil.isNotEmpty(inputDVO.getUserId())) {
+			outputDVO = loginService.getUserById(inputDVO);
+		} else if (ObjectUtil.isNotEmpty(inputDVO.getEmailAddr())) {
+			outputDVO = loginService.getUserByEmail(inputDVO);
+		}
+		
 		if (ObjectUtil.isNotEmpty(outputDVO)) {
 			SharedThreadMemory.create();
 			

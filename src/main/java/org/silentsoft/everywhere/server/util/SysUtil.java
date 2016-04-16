@@ -35,8 +35,8 @@ public final class SysUtil {
 		return ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_ID), BizConst.DEFAULT_USER_ID);
 	}
 	
-	public static String getUserUniqueSeq() {
-		return ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_UNIQUE_SEQ));
+	public static String getUserSeq() {
+		return ObjectUtil.toString(SharedThreadMemory.get(BizConst.KEY_USER_SEQ));
 	}
 	
 	public static String getCurrentTime() {

@@ -4,30 +4,35 @@ import java.util.List;
 
 import org.silentsoft.core.CommonConst;
 import org.silentsoft.core.util.ObjectUtil;
-import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
-import org.silentsoft.everywhere.server.model.table.TbmSmUserDQM;
+import org.silentsoft.everywhere.context.model.table.TbmSysUserDVO;
+import org.silentsoft.everywhere.server.model.table.TbmSysUserDQM;
 import org.silentsoft.everywhere.server.util.BeanUtil;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SearchService {
 	
-	private TbmSmUserDQM tbmSmUserDQM;
+	private TbmSysUserDQM tbmSysUserDQM;
 	
-	private TbmSmUserDQM getTbmSmUserDQM() {
-		if (tbmSmUserDQM == null) {
-			tbmSmUserDQM = BeanUtil.getBean(TbmSmUserDQM.class);
+	private TbmSysUserDQM getTbmSmUserDQM() {
+		if (tbmSysUserDQM == null) {
+			tbmSysUserDQM = BeanUtil.getBean(TbmSysUserDQM.class);
 		}
 		
-		return tbmSmUserDQM;
+		return tbmSysUserDQM;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public TbmSmUserDVO getUserInfo(TbmSmUserDVO tbmSmUserDVO) {
-		List<TbmSmUserDVO> returnDVO = getTbmSmUserDQM().getTbmSmUser(ObjectUtil.toMap(tbmSmUserDVO));
+	public TbmSysUserDVO getUserById(TbmSysUserDVO tbmSysUserDVO) {
+		List<TbmSysUserDVO> returnDVO = getTbmSmUserDQM().getUserById(ObjectUtil.toMap(tbmSysUserDVO));
 		
-//		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : tbmSmUserDVO;
 		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	public TbmSysUserDVO getUserByEmail(TbmSysUserDVO tbmSysUserDVO) {
+		List<TbmSysUserDVO> returnDVO = getTbmSmUserDQM().getUserByEmail(ObjectUtil.toMap(tbmSysUserDVO));
+		
+		return (returnDVO.size() > CommonConst.SIZE_EMPTY) ? returnDVO.get(CommonConst.FIRST_INDEX) : null;
+	}
 }

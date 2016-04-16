@@ -1,7 +1,7 @@
 package org.silentsoft.everywhere.server.fx.search.controller;
 
 import org.silentsoft.everywhere.context.host.EverywhereException;
-import org.silentsoft.everywhere.context.model.table.TbmSmUserDVO;
+import org.silentsoft.everywhere.context.model.table.TbmSysUserDVO;
 import org.silentsoft.core.util.JSONUtil;
 import org.silentsoft.everywhere.server.fx.search.service.SearchService;
 import org.slf4j.Logger;
@@ -23,17 +23,17 @@ public class SearchController {
 	
 	@RequestMapping(value="/user", method=RequestMethod.POST)
 	@ResponseBody
-	public TbmSmUserDVO getTbmSmUserDVO(@RequestBody String json) {
+	public TbmSysUserDVO getTbmSmUserDVO(@RequestBody String json) {
 		LOGGER.debug("i got json string.. <{}>", new Object[]{json});
 		
-		TbmSmUserDVO inputDVO = null;
+		TbmSysUserDVO inputDVO = null;
 		
 		try {
-			inputDVO = JSONUtil.JSONToObject(json, TbmSmUserDVO.class);
+			inputDVO = JSONUtil.JSONToObject(json, TbmSysUserDVO.class);
 		} catch (Exception e) {
 			LOGGER.error("Failed parse json to object !", new Object[]{e});
 		}
 		
-		return searchService.getUserInfo(inputDVO);
+		return searchService.getUserById(inputDVO);
 	}
 }

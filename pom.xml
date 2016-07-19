@@ -53,11 +53,17 @@
 		<spring-security.version>3.0.5.RELEASE</spring-security.version>
 		<spring-framework.version>4.0.6.RELEASE</spring-framework.version>
 
+		<!-- Transaction Essentials -->
+		<transactions-jdbc.version>3.9.3</transactions-jdbc.version>
+
 		<!-- Jackson -->
 		<jackson.version>2.4.2</jackson.version>
 
 		<!-- Json -->
 		<jason.version>20141113</jason.version>
+
+		<!-- JTA -->
+		<jta.version>1.1</jta.version>
 
 		<!-- Hibernate / JPA -->
 		<hibernate.version>4.2.1.Final</hibernate.version>
@@ -170,6 +176,13 @@
 			<version>${spring-framework.version}</version>
 		</dependency>
 		
+		<!-- Transaction Essentials -->
+		<dependency>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions-jdbc</artifactId>
+			<version>${transactions-jdbc.version}</version>
+		</dependency>
+		
 		<!-- Jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -192,6 +205,13 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>${jason.version}</version>
+		</dependency>
+		
+		<!-- JTA -->
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>${jta.version}</version>
 		</dependency>
 
 		<!-- Hibernate -->

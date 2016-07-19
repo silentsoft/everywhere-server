@@ -18,6 +18,12 @@
 		</layout>
 	</appender>
 
+	<category name="com.atomikos" additivity="false">
+		<priority value="ERROR" />
+		<appender-ref ref="console" />
+		<appender-ref ref="defaultDailyRollingFile" />
+	</category>
+
 	<root>
 		<level value="DEBUG" />
 		<appender-ref ref="console" />

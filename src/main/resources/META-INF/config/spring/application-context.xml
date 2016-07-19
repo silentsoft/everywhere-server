@@ -15,42 +15,90 @@
 		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
 		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd">
 	
+	<context:annotation-config />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<value>classpath:META-INF/config/properties/*.properties</value>
 		</property>
 	</bean>
-
-	<bean id="businessDataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
-		<property name="driverClassName" value="${dataSource.driverClassName}"/>
-		<property name="url" value="${dataSource.url}"/>
-		<property name="username" value="${dataSource.username}"/>
-		<property name="password" value="${dataSource.password}"/>
-		<property name="maxActive" value="${dataSource.maxActive}"/>
-		<property name="minIdle" value="${dataSource.minIdle}"/>
-		<property name="maxIdle" value="${dataSource.maxIdle}"/>
-		<property name="maxWait" value="${dataSource.maxWait}"/>
-		<property name="timeBetweenEvictionRunsMillis" value="${dataSource.timeBetweenEvictionRunsMillis}"/>
-		<property name="testOnBorrow" value="true"/>
-		<property name="testOnReturn" value="true"/>
-		
-		<!-- PostgreSQL -->
-		<property name="validationQuery" value="SELECT 1"/>
-		
-		<!-- Oracle -->
-<!-- 		<property name="validationQuery" value="SELECT 1 FROM DUAL"/> -->
+	
+	<bean id="userTransactionService" class="com.atomikos.icatch.config.UserTransactionServiceImp" init-method="init" destroy-method="shutdownForce">
+		<constructor-arg>
+			<props>
+				<prop key="com.atomikos.icatch.service">com.atomikos.icatch.standalone.UserTransactionServiceFactory</prop>
+				<prop key="com.atomikos.icatch.enable_logging">false</prop>
+			</props>
+		</constructor-arg>
 	</bean>
 	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="businessDataSource" />
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.J2eeTransactionManager" depends-on="userTransactionService" />
+	
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.J2eeUserTransaction" depends-on="userTransactionService" />
+	
+<!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!-- 		<property name="dataSource" ref="businessDataSource" /> -->
+<!-- 	</bean> -->
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" depends-on="userTransactionService">
+		<property name="transactionManager" ref="atomikosTransactionManager" />
+		<property name="userTransaction" ref="atomikosUserTransaction" />
 	</bean>
 	
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager" ref="transactionManager" />
 	</bean>
+
+	<bean id="projecthDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+		<property name="uniqueResourceName" value="${xaDataSource.projecth.uniqueResourceName}"/>
+		<property name="xaDataSourceClassName" value="${xaDataSource.projecth.xaDataSourceClassName}"/>
+		<property name="minPoolSize" value="${xaDataSource.minPoolSize}"/>
+		<property name="maxPoolSize" value="${xaDataSource.maxPoolSize}"/>
+		<property name="maxIdleTime" value="${xaDataSource.maxIdleTime}"/>
+		<property name="testQuery" value="${oracle.validationQuery}"/>
+		<property name="xaProperties">
+			<props>
+				<prop key="URL">${xaDataSource.projecth.url}</prop>
+				<prop key="user">${xaDataSource.projecth.user}</prop>
+				<prop key="password">${xaDataSource.projecth.password}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="businessDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+		<property name="uniqueResourceName" value="${xaDataSource.everywhere.uniqueResourceName}"/>
+		<property name="xaDataSourceClassName" value="${xaDataSource.everywhere.xaDataSourceClassName}"/>
+		<property name="minPoolSize" value="${xaDataSource.minPoolSize}"/>
+		<property name="maxPoolSize" value="${xaDataSource.maxPoolSize}"/>
+		<property name="maxIdleTime" value="${xaDataSource.maxIdleTime}"/>
+		<property name="testQuery" value="${postgre.validationQuery}"/>
+		<property name="xaProperties">
+			<props>
+				<prop key="serverName">${xaDataSource.everywhere.serverName}</prop>
+				<prop key="portNumber">${xaDataSource.everywhere.portNumber}</prop>
+				<prop key="databaseName">${xaDataSource.everywhere.databaseName}</prop>
+				<prop key="user">${xaDataSource.everywhere.user}</prop>
+				<prop key="password">${xaDataSource.everywhere.password}</prop>
+			</props>
+		</property>
+	</bean>
+
+<!-- 	<bean id="businessDataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="${dataSource.driverClassName}"/> -->
+<!-- 		<property name="url" value="${dataSource.url}"/> -->
+<!-- 		<property name="username" value="${dataSource.username}"/> -->
+<!-- 		<property name="password" value="${dataSource.password}"/> -->
+<!-- 		<property name="maxActive" value="${dataSource.maxActive}"/> -->
+<!-- 		<property name="minIdle" value="${dataSource.minIdle}"/> -->
+<!-- 		<property name="maxIdle" value="${dataSource.maxIdle}"/> -->
+<!-- 		<property name="maxWait" value="${dataSource.maxWait}"/> -->
+<!-- 		<property name="timeBetweenEvictionRunsMillis" value="${dataSource.timeBetweenEvictionRunsMillis}"/> -->
+<!-- 		<property name="testOnBorrow" value="true"/> -->
+<!-- 		<property name="testOnReturn" value="true"/> -->
+<!-- 		<property name="validationQuery" value="${postgre.validationQuery}"/> -->
+<!-- 	</bean> -->
 	
 	<bean id="beans" class="org.silentsoft.everywhere.server.util.BeanUtil"></bean>
-	
-	<context:annotation-config />
 	
 </beans>

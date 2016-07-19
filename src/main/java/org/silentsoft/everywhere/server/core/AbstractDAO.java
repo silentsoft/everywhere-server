@@ -16,7 +16,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class AbstractDAO extends NamedParameterJdbcTemplate {
 	
 	public AbstractDAO() {
-		super(BeanUtil.get("businessDataSource", DataSource.class));
+		this("businessDataSource");
+	}
+	
+	public AbstractDAO(String dataSource) {
+		super(BeanUtil.get(dataSource, DataSource.class));
 	}
 	
 	@SuppressWarnings("rawtypes")

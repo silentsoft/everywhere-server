@@ -13,6 +13,7 @@ public class TransactionUtilTest extends AbstractTest {
 			{
 				TbmSysUserDVO user = new TbmSysUserDVO();
 				user.setUserSeq("commit");
+				user.setStoreRoot("commit");
 				user.setUserId("commit");
 				user.setUserPwd("commit");
 				CrudUtil.remove(user);

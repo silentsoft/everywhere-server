@@ -24,10 +24,6 @@ public class BeanUtil implements ApplicationContextAware {
 		BeanUtil.applicationContext = applicationContext;
 	}
 	
-	public static void setApplicationContextForJUnitTest() {
-		BeanUtil.applicationContext = new ClassPathXmlApplicationContext("META-INF/config/spring/application-context.xml");
-	}
-
 	public static <T> T getBean(Class<T> clazz) {
 		if (clazz == null) {
 			return null;

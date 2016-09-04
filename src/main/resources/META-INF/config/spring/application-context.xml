@@ -34,9 +34,20 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.J2eeTransactionManager" depends-on="userTransactionService" />
+<!-- 	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.J2eeTransactionManager" depends-on="userTransactionService" /> -->
+<!-- 	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.J2eeUserTransaction" depends-on="userTransactionService" /> -->
 	
-	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.J2eeUserTransaction" depends-on="userTransactionService" />
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+		init-method="init" destroy-method="close" depends-on="userTransactionService">
+		<!-- IMPORTANT: disable startup because the userTransactionService above does this --> 
+		<property name="startupTransactionService" value="false" />
+		
+		<property name="forceShutdown" value="false" />
+	</bean>
+	
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp" depends-on="userTransactionService">
+		<property name="transactionTimeout" value="300" /> <!-- Seconds -->
+	</bean>
 	
 <!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
 <!-- 		<property name="dataSource" ref="businessDataSource" /> -->
